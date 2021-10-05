@@ -23,12 +23,18 @@ public class VendedorSopaipillas {
         System.out.println("Su vuelto es: " + vuelto);
     }
 
-    private int calcularVuelto(int precioTotal, int totalPagadoCliente){
-        int vuelto = totalPagadoCliente - precioTotal;
-        if(vuelto < 0){
+    public int calcularVuelto(int precioTotal, int totalPagadoCliente){
+        try{
+            int vuelto = totalPagadoCliente - precioTotal;
+            if(vuelto < 0){
+                return -1;
+            }else {
+                return vuelto;
+            }
+        }catch (Exception e){
+            System.out.println("uno(o ambos) valores son invalidos");
+            e.printStackTrace();
             return -1;
-        }else {
-            return vuelto;
         }
     }
 
@@ -112,10 +118,10 @@ public class VendedorSopaipillas {
 
 
 
-    //METODOS PARA JUGAR EN PRUEBAS UNITARIAS
+    //METODOS PARA JUGAR EN PRUEBAS UNITARIAS O INSTANCIAR
     public int pedirSopaipilla(String tamañoElegido, String[] aderezosElegidos, int totalPagadoCliente){
         try {
-            precioTotal += precioArticulo(validarExistenciaArticulo(tamañoElegido, tamaños),precioTamaño);
+            precioTotal += precioArticulo(validarExistenciaArticulo(tamañoElegido, tamaños), precioTamaño);
             for (String aderezosElegido : aderezosElegidos) {
                 precioTotal += precioArticulo(validarExistenciaArticulo(aderezosElegido, aderezos), precioAderezo);
             }
@@ -130,14 +136,12 @@ public class VendedorSopaipillas {
     }// INSTANCIADO
 
     public int validarExistenciaArticulo(String articulo, ArrayList<String> listaArticulos){
-        int indice = -1;
         for (int i = 0; i < listaArticulos.size(); i++) {
-            if(articulo.equals(listaArticulos.get(i))){
-                indice = listaArticulos.indexOf(i);
-                break;
+            if(articulo == listaArticulos.get(i)){
+                return listaArticulos.indexOf(listaArticulos.get(i));
             }
         }
-        return indice;
+        return -1;
     }
 
     public int precioArticulo(int indiceArticulo, ArrayList<Integer> listaPrecios){
@@ -146,10 +150,10 @@ public class VendedorSopaipillas {
             precio = listaPrecios.get(indiceArticulo);
             return precio;
         }catch (IndexOutOfBoundsException e1){
-            e1.printStackTrace();
+            //e1.printStackTrace(); // nos dice donde esta el fallo, pero no se cae, retorna 0;
             return 0;
         }catch (Exception e2){
-            e2.printStackTrace();
+            //e2.printStackTrace(); // nos dice donde esta el fallo, pero no se cae, retorna 0;
             return 0;
         }
     }
